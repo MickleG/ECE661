@@ -15,6 +15,9 @@ test_img2 = np.array(cv2.imread('HW3_images/test_img2.jpg'))
 # plt.imshow(img1)
 # plt.show()
 
+# plt.imshow(img2)
+# plt.show()
+
 # plt.imshow(test_img2)
 # plt.show()
 
@@ -26,11 +29,14 @@ height2 = 600
 
 
 img1_points = np.array([[71, 421], [1220, 140], [1354, 1950], [421, 1789]])
+img2_points = np.array([[1083, 528], [1306, 487], [1296, 1340], [1081, 1222]])
 test_img1_points = np.array([[923, 1300], [2330, 1165], [2241, 2134], [1006, 2668]])
 test_img2_points = np.array([[730, 1014], [2266, 1116], [2037, 2882], [821, 2638]])
 
 
 img1_2step_points = np.array([[71, 421], [1220, 140], [1354, 1950], [71, 421], [421, 1789], [1354, 1950]])
+img2_2step_points = np.array([[1083, 528], [1306, 487], [1296, 1340], [916, 1127], [811, 1069], [814, 576]])
+
 test_img1_2step_points = np.array([[923, 1300], [2330, 1165], [2241, 2134], [923, 1300], [1006, 2668], [2241, 2134]])
 test_img2_2step_points = np.array([[730, 1014], [2266, 1116], [2037, 2882], [730, 1014], [821, 2638], [2037, 2882]])
 
@@ -81,6 +87,8 @@ def apply_homography_with_inverse(src_img, H):
 
 	dest_img, H = calculate_raster_and_resize(src_img, H)
 
+	print(dest_img.shape)
+
 
 	domain_height, domain_width, _ = src_img.shape
 	range_height, range_width, _ = dest_img.shape
@@ -120,42 +128,28 @@ def calculate_raster(img, H):
 	min_y = int(min(corners_transformed_hc[1,:]))
 	max_y = int(max(corners_transformed_hc[1,:]))
 
-	# print("min_x: ", min_x)
-	# print("max_x: ", max_x)
-
-	# print("min_y: ", min_y)
-	# print("max_y: ", max_y)
-
 	w_out = max_x - min_x
 	h_out = max_y - min_y
 
 	H_trans = np.array([[1, 0, -min_x], [0, 1, -min_y], [0, 0, 1]])
 
-	H = np.matmul(H_trans, H)
-
-	return w_out, h_out, H, min_x, max_x
+	return w_out, h_out, H_trans
 
 def calculate_raster_and_resize(img, H):
 
 	# print(H)
 
-	w_out, h_out, _, _, _ = calculate_raster(img, H)
+	w_out, h_out, H_trans = calculate_raster(img, H)
 
 	#resizing
 	aspect_ratio = w_out / (h_out + 1e-6)
 	h_out_final = 700
-	w_out_final = aspect_ratio * h_out_final
-	H_resize = np.array([[w_out_final / (w_out + 1e-6), 0, 0], [0, h_out_final / (h_out + 1e-6), 0], [0, 0, 1]])
+	w_out_final = int(aspect_ratio * h_out_final)
+	H_resize = np.array([[w_out_final / (w_out), 0, 0], [0, h_out_final / (h_out), 0], [0, 0, 1]])
 
-	H = np.matmul(H_resize, H)
+	H = np.matmul(H_resize, np.matmul(H_trans, H))
 
-	w_out, h_out, H_trans, min_x, max_x = calculate_raster(img, H)
-
-	# print("w_out, h_out: ", w_out, h_out)
-
-	H = np.matmul(H_trans, H)
-
-	new_img = np.zeros((h_out, w_out, 3), dtype=np.uint8)
+	new_img = np.zeros((h_out_final, w_out_final, 3), dtype=np.uint8)
 
 	return new_img, H
 
@@ -304,7 +298,7 @@ def one_step(img_1step_points, img):
 
 
 
-state = '1step'
+state = '2step'
 
 if(state == 'p2p'):
 	# ## Finding Homographies
@@ -331,10 +325,12 @@ if(state == 'p2p'):
 
 elif(state == '2step'):
 	two_step(img1_points, img1, img1_2step_points)
-	two_step(test_img1_points, test_img1, test_img1_2step_points)
-	two_step(test_img2_points, test_img2, test_img2_2step_points)
+	two_step(img2_points, img2, img2_2step_points)
+	# two_step(test_img1_points, test_img1, test_img1_2step_points)
+	# two_step(test_img2_points, test_img2, test_img2_2step_points)
 
 elif(state == "1step"):
 	one_step(img1_1step_points, img1)
+	one_step(img2_1step_points, img2)
 
 
