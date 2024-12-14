@@ -227,42 +227,42 @@ def sift(img1, img2, namestring):
 	cv2.imwrite('HW4_images/SIFT_' + namestring + '.jpg', combined_image, [cv2.IMWRITE_JPEG_QUALITY, 90])
 
 
-hovde1 = cv2.imread('HW4_images/hovde_2.jpg')
-hovde2 = cv2.imread('HW4_images/hovde_3.jpg')
-temple1 = cv2.imread('HW4_images/temple_1.jpg')
-temple2 = cv2.imread('HW4_images/temple_2.jpg')
+hovde1 = cv2.imread('HW4_images/2.jpg')
+hovde2 = cv2.imread('HW4_images/3.jpg')
+# temple1 = cv2.imread('HW4_images/temple_1.jpg')
+# temple2 = cv2.imread('HW4_images/temple_2.jpg')
 
-keyboard1 = cv2.imread('HW4_images/keyboard1.jpg')
-keyboard2 = cv2.imread('HW4_images/keyboard2.jpg')
-oscilloscope1 = cv2.imread('HW4_images/oscilloscope1.jpg')
-oscilloscope2 = cv2.imread('HW4_images/oscilloscope2.jpg')
+# keyboard1 = cv2.imread('HW4_images/keyboard1.jpg')
+# keyboard2 = cv2.imread('HW4_images/keyboard2.jpg')
+# oscilloscope1 = cv2.imread('HW4_images/oscilloscope1.jpg')
+# oscilloscope2 = cv2.imread('HW4_images/oscilloscope2.jpg')
 
 
-sigmas = [0.8, 1.2, 1.4, 2] # replace with custom values
+sigmas = [2] # replace with custom values
 
 for sigma in sigmas:
-	hovde1_corners = harris_corner_detection(hovde1, sigma, 0.05, 'hovde1')
-	hovde2_corners = harris_corner_detection(hovde2, sigma, 0.05, 'hovde2')
-	temple1_corners = harris_corner_detection(temple1, sigma, 0.05, 'temple1')
-	temple2_corners = harris_corner_detection(temple2, sigma, 0.05, 'temple2')
+	hovde1_corners = harris_corner_detection(hovde1, sigma, 0.05, 'fountain1')
+	hovde2_corners = harris_corner_detection(hovde2, sigma, 0.05, 'fountain2')
+	# temple1_corners = harris_corner_detection(temple1, sigma, 0.05, 'temple1')
+	# temple2_corners = harris_corner_detection(temple2, sigma, 0.05, 'temple2')
 
-	keyboard1_corners = harris_corner_detection(keyboard1, sigma, 0.05, 'keyboard1')
-	keyboard2_corners = harris_corner_detection(keyboard2, sigma, 0.05, 'keyboard2')
-	oscilloscope1_corners = harris_corner_detection(oscilloscope1, sigma, 0.05, 'oscilloscope1')
-	oscilloscope2_corners = harris_corner_detection(oscilloscope2, sigma, 0.05, 'oscilloscope2')
+	# keyboard1_corners = harris_corner_detection(keyboard1, sigma, 0.05, 'keyboard1')
+	# keyboard2_corners = harris_corner_detection(keyboard2, sigma, 0.05, 'keyboard2')
+	# oscilloscope1_corners = harris_corner_detection(oscilloscope1, sigma, 0.05, 'oscilloscope1')
+	# oscilloscope2_corners = harris_corner_detection(oscilloscope2, sigma, 0.05, 'oscilloscope2')
 
 
-SSD(hovde1, hovde2, hovde1_corners, hovde2_corners, 39, 'hovde')
-SSD(temple1, temple2, temple1_corners, temple2_corners, 39, 'temple')
-SSD(keyboard1, keyboard2, keyboard1_corners, keyboard2_corners, 21, 'keyboard')
-SSD(oscilloscope1, oscilloscope2, oscilloscope1_corners, oscilloscope2_corners, 21, 'oscilloscope')
+SSD(hovde1, hovde2, hovde1_corners, hovde2_corners, 39, 'fountain')
+# SSD(temple1, temple2, temple1_corners, temple2_corners, 39, 'temple')
+# SSD(keyboard1, keyboard2, keyboard1_corners, keyboard2_corners, 21, 'keyboard')
+# SSD(oscilloscope1, oscilloscope2, oscilloscope1_corners, oscilloscope2_corners, 21, 'oscilloscope')
 
-NCC(hovde1, hovde2, hovde1_corners, hovde2_corners, 39, 'hovde')
-NCC(temple1, temple2, temple1_corners, temple2_corners, 39, 'temple')
-NCC(keyboard1, keyboard2, keyboard1_corners, keyboard2_corners, 21, 'keyboard')
-NCC(oscilloscope1, oscilloscope2, oscilloscope1_corners, oscilloscope2_corners, 21, 'oscilloscope')
+NCC(hovde1, hovde2, hovde1_corners, hovde2_corners, 39, 'fountain')
+# NCC(temple1, temple2, temple1_corners, temple2_corners, 39, 'temple')
+# NCC(keyboard1, keyboard2, keyboard1_corners, keyboard2_corners, 21, 'keyboard')
+# NCC(oscilloscope1, oscilloscope2, oscilloscope1_corners, oscilloscope2_corners, 21, 'oscilloscope')
 
-sift(hovde1, hovde2, 'hovde')
-sift(temple1, temple2, 'temple')
-sift(keyboard1, keyboard2, 'keyboard')
-sift(oscilloscope1, oscilloscope2, 'oscilloscope')
+sift(hovde1, hovde2, 'fountain')
+# sift(temple1, temple2, 'temple')
+# sift(keyboard1, keyboard2, 'keyboard')
+# sift(oscilloscope1, oscilloscope2, 'oscilloscope')
